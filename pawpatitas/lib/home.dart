@@ -22,7 +22,7 @@ class _HomePageState extends State<HomePage> {
     SoportePage(),
     DonarPage(),    
     PaginaMetricas(),
-    AnimalUploadForm(),
+    TestPage(),
   
   ];
 
