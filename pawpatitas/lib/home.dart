@@ -78,7 +78,7 @@ class _HomePageState extends State<HomePage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Image.asset('assets/banner3.png', fit: BoxFit.fitWidth),
+                Image.asset('assets/banner3.png', fit: BoxFit.fill),
                 IconButton(
                   icon: const Icon(Icons.logout),
                   onPressed: () => _logout(context), // Llama a la función de cierre de sesión

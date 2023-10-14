@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class AdopcionPorRaza {
@@ -17,23 +18,6 @@ class IngresoPorFecha {
 }
 
 class PaginaMetricas extends StatelessWidget {
-  final List<AdopcionPorRaza> adopcionData = [
-    AdopcionPorRaza('Labrador', 23, Colors.yellow),
-    AdopcionPorRaza('Bulldog', 10, Colors.green),
-    AdopcionPorRaza('Beagle', 15, Colors.blue),
-    AdopcionPorRaza('Poodle', 8, Colors.red),
-    AdopcionPorRaza('Chihuahua', 20, Colors.purple),
-    AdopcionPorRaza('Husky', 18, Colors.orange),
-  ];
-
-  final List<IngresoPorFecha> ingresoData = [
-    IngresoPorFecha('2023-10-01', 5),
-    IngresoPorFecha('2023-10-02', 8),
-    IngresoPorFecha('2023-10-03', 10),
-    IngresoPorFecha('2023-10-04', 12),
-    IngresoPorFecha('2023-10-05', 6),
-  ];
-
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -59,40 +43,137 @@ class PaginaMetricas extends StatelessWidget {
   }
 
   Widget _buildAdopcionChart() {
-    return Center(
-      child: SfCircularChart(
-        series: <PieSeries<AdopcionPorRaza, String>>[
-          PieSeries<AdopcionPorRaza, String>(
-            dataSource: adopcionData,
-            xValueMapper: (AdopcionPorRaza data, _) => data.raza,
-            yValueMapper: (AdopcionPorRaza data, _) => data.adopciones,
-            dataLabelMapper: (AdopcionPorRaza data, _) =>
-                '${data.raza}: ${data.adopciones}',
-            dataLabelSettings: DataLabelSettings(
-              isVisible: true,
-              labelPosition: ChartDataLabelPosition.inside,
-            ),
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance.collection('animales').snapshots(),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Center(
+            child: Text('Error: ${snapshot.error}'),
+          );
+        }
+
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+
+        final data = snapshot.data?.docs;
+        if (data == null || data.isEmpty) {
+          return Center(
+            child: Text('No hay datos disponibles en la colección "animales"'),
+          );
+        }
+
+        
+
+        return Center(
+          child: SfCircularChart(
+            series: <PieSeries<AdopcionPorRaza, String>>[
+              PieSeries<AdopcionPorRaza, String>(
+                dataSource: _generateAdoptionData(data),
+                xValueMapper: (AdopcionPorRaza data, _) => data.raza,
+                yValueMapper: (AdopcionPorRaza data, _) => data.adopciones,
+                dataLabelMapper: (AdopcionPorRaza data, _) =>
+                    '${data.raza}: ${data.adopciones}',
+                dataLabelSettings: DataLabelSettings(
+                  isVisible: true,
+                  labelPosition: ChartDataLabelPosition.inside,
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 
+  List<AdopcionPorRaza> _generateAdoptionData(List<QueryDocumentSnapshot> data) {
+    
+    final Map<String, int> razaAdopciones = {};
+
+    data.forEach((document) {
+      final raza = document['raza'] as String;
+      razaAdopciones[raza] = (razaAdopciones[raza] ?? 0) + 1;
+    });
+
+    return razaAdopciones.entries.map((entry) {
+      final raza = entry.key;
+      final adopciones = entry.value;
+      final color = Colors.blue; 
+      return AdopcionPorRaza(raza, adopciones, color);
+    }).toList();
+  }
+
   Widget _buildIngresoChart() {
-    return Center(
-      child: SfCartesianChart(
-        primaryXAxis: CategoryAxis(),
-        series: <ColumnSeries<IngresoPorFecha, String>>[
-          ColumnSeries<IngresoPorFecha, String>(
-            dataSource: ingresoData,
-            xValueMapper: (IngresoPorFecha data, _) => data.fecha,
-            yValueMapper: (IngresoPorFecha data, _) => data.ingresos,
-            dataLabelSettings: DataLabelSettings(isVisible: true),
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance.collection('animales').snapshots(),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Center(
+            child: Text('Error: ${snapshot.error}'),
+          );
+        }
+
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+
+        final data = snapshot.data?.docs;
+        if (data == null || data.isEmpty) {
+          return Center(
+            child: Text('No hay datos disponibles en la colección "animales"'),
+          );
+        }
+
+        return Center(
+          child: SfCartesianChart(
+            primaryXAxis: CategoryAxis(),
+            series: <ColumnSeries<IngresoPorFecha, String>>[
+              ColumnSeries<IngresoPorFecha, String>(
+                dataSource: _generateIngresoData(data),
+                xValueMapper: (IngresoPorFecha data, _) => data.fecha,
+                yValueMapper: (IngresoPorFecha data, _) => data.ingresos,
+                dataLabelSettings: DataLabelSettings(isVisible: true),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
+
+  List<IngresoPorFecha> _generateIngresoData(List<QueryDocumentSnapshot> data) {
+  final Map<DateTime, int> fechaIngresos = {};
+
+  data.forEach((document) {
+    final timestamp = document['fecha_ingreso'] as Timestamp;
+    final date = timestamp.toDate();
+
+    // de los datos de fecha de ingreso tomaremos solamente el año y el mes para hacer una clasificacion por rango de un mes
+    final formattedDate = DateTime(date.year, date.month);
+
+    fechaIngresos[formattedDate] = (fechaIngresos[formattedDate] ?? 0) + 1;
+  });
+
+  final sortedEntries = fechaIngresos.entries.toList()
+    ..sort((a, b) => a.key.compareTo(b.key)); // oredenamos la fechas para que esten en orden a la hora del plot
+
+  return sortedEntries.map((entry) {
+    final fecha = entry.key;
+    final ingresos = entry.value;
+
+    
+    final formattedDate = '${fecha.year}-${fecha.month.toString().padLeft(2, '0')}';
+
+    return IngresoPorFecha(formattedDate, ingresos);
+  }).toList();
+}
+
+
+
 }
 
 void main() {
