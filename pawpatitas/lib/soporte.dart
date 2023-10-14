@@ -30,7 +30,8 @@ class _SoportePageState extends State<SoportePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Center(child: Text('Soporte', style: TextStyle(fontSize: 45))),
+        title: const Center(
+            child: Text('Soporte', style: TextStyle(fontSize: 45))),
       ),
       body: Center(
         child: Column(
@@ -72,25 +73,25 @@ class _SoportePageState extends State<SoportePage> {
                       content: SingleChildScrollView(
                         child: Column(
                           children: [
-                            
                             TextFormField(
                               controller: nombreController,
-                              decoration: const InputDecoration(labelText: 'Nombre'),
+                              decoration:
+                                  const InputDecoration(labelText: 'Nombre'),
                             ),
                             TextFormField(
                               controller: contactoController,
-                              decoration: const InputDecoration(labelText: 'Contacto'),
+                              decoration:
+                                  const InputDecoration(labelText: 'Contacto'),
                             ),
                             TextFormField(
                               controller: descripcionController,
-                              decoration: const InputDecoration(labelText: 'Descripción'),
+                              decoration: const InputDecoration(
+                                  labelText: 'Descripción'),
                               maxLines: 3,
                             ),
                             const SizedBox(height: 10),
                             ElevatedButton(
                               onPressed: () {
-                                
-
                                 Navigator.of(context).pop();
                               },
                               child: const Text('Enviar'),
@@ -126,7 +127,8 @@ class _SoportePageState extends State<SoportePage> {
                                 itemCount: consejos.length,
                                 itemBuilder: (context, index) {
                                   return ListTile(
-                                    leading: const Icon(Icons.lightbulb_outline),
+                                    leading:
+                                        const Icon(Icons.lightbulb_outline),
                                     title: Text('Consejo ${index + 1}'),
                                     subtitle: Text(consejos[index]),
                                   );
@@ -140,7 +142,8 @@ class _SoportePageState extends State<SoportePage> {
                                   icon: const Icon(Icons.arrow_back),
                                   onPressed: () {
                                     _pageController.previousPage(
-                                      duration: const Duration(milliseconds: 300),
+                                      duration:
+                                          const Duration(milliseconds: 300),
                                       curve: Curves.easeInOut,
                                     );
                                   },
@@ -155,7 +158,8 @@ class _SoportePageState extends State<SoportePage> {
                                   icon: const Icon(Icons.arrow_forward),
                                   onPressed: () {
                                     _pageController.nextPage(
-                                      duration: const Duration(milliseconds: 300),
+                                      duration:
+                                          const Duration(milliseconds: 300),
                                       curve: Curves.easeInOut,
                                     );
                                   },
@@ -184,7 +188,7 @@ class _SoportePageState extends State<SoportePage> {
                 title: Text('Contáctanos'),
                 leading: Icon(Icons.phone),
               ),
-            ),         
+            ),
           ],
         ),
       ),
