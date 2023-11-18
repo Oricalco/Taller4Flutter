@@ -12,7 +12,7 @@ class ConsejosPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Consejos de Firestore'),
+        title: Text('Consejos para los animales'),
       ),
       body: FirestoreConsejos(),
       floatingActionButton: FloatingActionButton(
@@ -27,7 +27,20 @@ class ConsejosPage extends StatelessWidget {
   }
 }
 
-class FirestoreConsejos extends StatelessWidget {
+class FirestoreConsejos extends StatefulWidget {
+  @override
+  _FirestoreConsejosState createState() => _FirestoreConsejosState();
+}
+
+class _FirestoreConsejosState extends State<FirestoreConsejos> {
+  PageController _pageController = PageController();
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
@@ -54,17 +67,56 @@ class FirestoreConsejos extends StatelessWidget {
           );
         }
 
-        return ListView(
-          shrinkWrap: true,
-          children: docs.map((DocumentSnapshot document) {
-            final data = document.data() as Map<String, dynamic>;
-            final contenido = data['Contenido'] ?? 'Contenido no disponible';
+        return SizedBox(
+          width: MediaQuery.of(context).size.width * 0.8,
+          height: 300,
+          child: PageView.builder(
+            controller: _pageController,
+            itemCount: docs.length,
+            itemBuilder: (context, index) {
+              final data = docs[index].data() as Map<String, dynamic>;
+              final contenido = data['Contenido'] ?? 'Contenido no disponible';
 
-            return ListTile(
-              title: Text('Consejo:'),
-              subtitle: Text(contenido),
-            );
-          }).toList(),
+              return Column(
+                children: [
+                  ListTile(
+                    title: Text('Consejo:'),
+                    subtitle: Text(contenido),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.arrow_back),
+                        onPressed: () {
+                          if (index > 0) {
+                            // Solo retrocede si no está en la primera página
+                            _pageController.previousPage(
+                              duration: Duration(milliseconds: 300),
+                              curve: Curves.easeInOut,
+                            );
+                          }
+                        },
+                      ),
+                      Text('${index + 1} / ${docs.length}'),
+                      IconButton(
+                        icon: Icon(Icons.arrow_forward),
+                        onPressed: () {
+                          if (index < docs.length - 1) {
+                            // Solo avanza si no está en la última página
+                            _pageController.nextPage(
+                              duration: Duration(milliseconds: 300),
+                              curve: Curves.easeInOut,
+                            );
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              );
+            },
+          ),
         );
       },
     );
