@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'auth.dart'; // Importa tu clase Auth aquí
 import 'home.dart';
+import 'admin_screen.dart'; // Importa la pantalla de administrador
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+  const LoginScreen({Key? key});
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -12,12 +13,68 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  bool isLogin = true; // Variable para controlar si estamos en la pantalla de inicio de sesión o registro
+  final TextEditingController adminCodeController = TextEditingController();
+  bool isLogin = true;
+  bool isAdmin = false;
 
   void toggleLoginRegistration() {
     setState(() {
-      isLogin = !isLogin; // Cambia el valor de isLogin al opuesto
+      isLogin = !isLogin;
     });
+  }
+
+  void toggleAdmin() {
+    setState(() {
+      isAdmin = !isAdmin;
+    });
+  }
+
+  Future<void> verifyAdminCode(BuildContext context) async {
+    String enteredCode = adminCodeController.text.trim();
+
+    if (enteredCode == 'pawpatitas123') {
+      // Código de administrador correcto, permitir el registro
+      await register(context);
+    } else {
+      // Código de administrador incorrecto, mostrar un mensaje de error
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Código de administrador incorrecto. Verifica el código e intenta nuevamente.'),
+        ),
+      );
+    }
+  }
+
+  Future<void> register(BuildContext context) async {
+    String email = emailController.text.trim();
+    String password = passwordController.text.trim();
+
+    if (email.isNotEmpty && password.isNotEmpty) {
+      Auth auth = Auth();
+      bool registered = await auth.registerWithEmailAndPassword(email, password, isAdmin ? 'admin' : 'usuario');
+
+      if (registered) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Registro exitoso. Ahora puedes iniciar sesión.'),
+          ),
+        );
+
+        toggleLoginRegistration();
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Error durante el registro. Inténtalo de nuevo.'),
+          ),
+        );
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Por favor, completa todos los campos.'),
+        ),
+      );
+    }
   }
 
   void login(BuildContext context) async {
@@ -25,21 +82,26 @@ class _LoginScreenState extends State<LoginScreen> {
     String password = passwordController.text.trim();
 
     if (isLogin) {
-      // Realiza el inicio de sesión si estamos en la pantalla de inicio de sesión
       if (email.isNotEmpty && password.isNotEmpty) {
         Auth auth = Auth();
         bool loggedIn = await auth.signInWithEmailAndPassword(email, password);
 
         if (loggedIn) {
-          // Redirige al usuario a la pantalla de inicio (HomeScreen) si el inicio de sesión fue exitoso
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (context) => const HomePage(),
-            ),
-          );
+          String? role = auth.getRole();
+          if (role == 'admin') {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (context) => const AdminScreen(),
+              ),
+            );
+          } else {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (context) => const HomePage(),
+              ),
+            );
+          }
         } else {
-          // Maneja aquí el caso de inicio de sesión fallido
-          // Por ejemplo, muestra un mensaje de error
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Inicio de sesión fallido. Verifica tus credenciales.'),
@@ -47,8 +109,6 @@ class _LoginScreenState extends State<LoginScreen> {
           );
         }
       } else {
-        // Maneja aquí el caso de campos vacíos
-        // Por ejemplo, muestra un mensaje de error
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Por favor, completa todos los campos.'),
@@ -56,36 +116,56 @@ class _LoginScreenState extends State<LoginScreen> {
         );
       }
     } else {
-      // Realiza el registro si estamos en la pantalla de registro
-      if (email.isNotEmpty && password.isNotEmpty) {
-        Auth auth = Auth();
-        bool registered = await auth.registerWithEmailAndPassword(email, password);
-
-        if (registered) {
-          // Redirige al usuario a la pantalla de inicio de sesión después del registro exitoso
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Registro exitoso. Ahora puedes iniciar sesión.'),
+      if (isAdmin) {
+    // Si el usuario elige registrarse como administrador, solicitar el código de administrador
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Center(
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width * 0.8,
+            child: AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0), // Ajusta el valor según la cantidad de redondeo que desees
+              ),
+              title: const Text('Verificar Código de Administrador'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text('Ingresa el código de administrador proporcionado por el cliente:'),
+                  const SizedBox(height: 10),
+                  TextFormField(
+                    controller: adminCodeController,
+                    decoration: const InputDecoration(
+                      labelText: 'Código de Administrador',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                ],
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Cancelar'),
+                ),
+                TextButton(
+                  onPressed: () async {
+                    Navigator.of(context).pop();
+                    await verifyAdminCode(context);
+                  },
+                  child: const Text('Verificar'),
+                ),
+              ],
             ),
-          );
-          toggleLoginRegistration(); // Cambia de nuevo a la pantalla de inicio de sesión
-        } else {
-          // Maneja aquí el caso de registro fallido
-          // Por ejemplo, muestra un mensaje de error
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Error durante el registro. Inténtalo de nuevo.'),
-            ),
-          );
-        }
-      } else {
-        // Maneja aquí el caso de campos vacíos
-        // Por ejemplo, muestra un mensaje de error
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Por favor, completa todos los campos.'),
           ),
         );
+      },
+    );
+      } else {
+        // Si el usuario no elige registrarse como administrador, proceder con el registro
+        await register(context);
       }
     }
   }
@@ -152,11 +232,24 @@ class _LoginScreenState extends State<LoginScreen> {
                             border: OutlineInputBorder(),
                           ),
                         ),
+                        if (!isLogin) // Mostrar el interruptor solo durante el registro
+                          const SizedBox(height: 10),
+                        if (!isLogin)
+                          SwitchListTile(
+                            title: Text('Registrarse como Admin'),
+                            value: isAdmin,
+                            onChanged: (value) {
+                              setState(() {
+                                isAdmin = value;
+                              });
+                            },
+                          ),
                         const SizedBox(height: 20),
                         ElevatedButton(
                           onPressed: () => login(context),
                           style: ElevatedButton.styleFrom(
-                            foregroundColor: Colors.white, backgroundColor: Colors.red,
+                            foregroundColor: Colors.white,
+                            backgroundColor: Colors.red,
                           ),
                           child: Text(isLogin ? 'Iniciar Sesión' : 'Registrar'),
                         ),
@@ -166,7 +259,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           child: Text(
                             isLogin ? '¿No tienes una cuenta? Regístrate' : '¿Ya tienes una cuenta? Inicia Sesión',
                             style: const TextStyle(
-                              color: Colors.red, // Cambia el color del texto del botón switch
+                              color: Colors.red,
                             ),
                           ),
                         ),

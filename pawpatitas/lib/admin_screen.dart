@@ -4,25 +4,25 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'galeria.dart';
 import 'soporte.dart';
 import 'donar.dart';
-
+import 'metrica.dart';
 import 'login.dart';
+import 'animal_upload.dart';
 
-
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key});
+class AdminScreen extends StatefulWidget {
+  const AdminScreen({Key? key});
 
   @override
-  _HomePageState createState() => _HomePageState();
+  _AdminScreenState createState() => _AdminScreenState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _AdminScreenState extends State<AdminScreen> {
   int _currentIndex = 0;
   final screens = [
     GaleriaPage(),
     SoportePage(),
-    DonarPage(),    
-
-  
+    DonarPage(),
+    PaginaMetricas(),
+    TestPage(),
   ];
 
   void _logout(BuildContext context) {
@@ -109,7 +109,15 @@ class _HomePageState extends State<HomePage> {
           GButton(
             icon: Icons.monetization_on,
             text: 'Donaciones',
-          ),    
+          ),
+          GButton(
+            icon: Icons.bar_chart,
+            text: 'metrica',
+          ),
+          GButton(
+            icon: Icons.pets,
+            text: 'Subir mascota',
+          ),
         ],
       ),
     );
@@ -118,6 +126,6 @@ class _HomePageState extends State<HomePage> {
 
 void main() {
   runApp(MaterialApp(
-    home: HomePage(),
+    home: AdminScreen(),
   ));
 }
