@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'consejos.dart';
+import 'consejos_usuario.dart';
 
 class SoportePage extends StatefulWidget {
   const SoportePage({Key? key}) : super(key: key);
@@ -121,7 +122,8 @@ class _SoportePageState extends State<SoportePage> {
                         title: const Text('Consejos Cuidado Animal'),
                         content: Container(
                           width: MediaQuery.of(context).size.width * 0.8,
-                          child: ConsejosPage(),
+                          //child: ConsejosPage(), //Vista de admin
+                          child: ConsejosUsuario(), // Vista de usuario
                         ),
                       );
                     },
