@@ -29,6 +29,16 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
+  void showSnackBar(BuildContext? context, String message) {
+    if (context != null && context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(message),
+        ),
+      );
+    }
+  }
+
   Future<void> verifyAdminCode(BuildContext context) async {
     String enteredCode = adminCodeController.text.trim();
 
@@ -37,11 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
       await register(context);
     } else {
       // Código de administrador incorrecto, mostrar un mensaje de error
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Código de administrador incorrecto. Verifica el código e intenta nuevamente.'),
-        ),
-      );
+      showSnackBar(context, 'Código de administrador incorrecto. Verifica el código e intenta nuevamente.');
     }
   }
 
@@ -54,26 +60,13 @@ class _LoginScreenState extends State<LoginScreen> {
       bool registered = await auth.registerWithEmailAndPassword(email, password, isAdmin ? 'admin' : 'usuario');
 
       if (registered) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Registro exitoso. Ahora puedes iniciar sesión.'),
-          ),
-        );
-
+        showSnackBar(context, 'Registro exitoso. Ahora puedes iniciar sesión.');
         toggleLoginRegistration();
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Error durante el registro. Inténtalo de nuevo.'),
-          ),
-        );
+        showSnackBar(context, 'Error durante el registro. Inténtalo de nuevo.');
       }
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Por favor, completa todos los campos.'),
-        ),
-      );
+      showSnackBar(context, 'Por favor, completa todos los campos.');
     }
   }
 
@@ -102,67 +95,59 @@ class _LoginScreenState extends State<LoginScreen> {
             );
           }
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Inicio de sesión fallido. Verifica tus credenciales.'),
-            ),
-          );
+          showSnackBar(context, 'Inicio de sesión fallido. Verifica tus credenciales.');
         }
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Por favor, completa todos los campos.'),
-          ),
-        );
+        showSnackBar(context, 'Por favor, completa todos los campos.');
       }
     } else {
       if (isAdmin) {
-    // Si el usuario elige registrarse como administrador, solicitar el código de administrador
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Center(
-          child: SizedBox(
-            width: MediaQuery.of(context).size.width * 0.8,
-            child: AlertDialog(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0), // Ajusta el valor según la cantidad de redondeo que desees
-              ),
-              title: const Text('Verificar Código de Administrador'),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Text('Ingresa el código de administrador proporcionado por el cliente:'),
-                  const SizedBox(height: 10),
-                  TextFormField(
-                    controller: adminCodeController,
-                    decoration: const InputDecoration(
-                      labelText: 'Código de Administrador',
-                      border: OutlineInputBorder(),
-                    ),
+        // Si el usuario elige registrarse como administrador, solicitar el código de administrador
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return Center(
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width * 0.8,
+                child: AlertDialog(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
                   ),
-                ],
+                  title: const Text('Verificar Código de Administrador'),
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Text('Ingresa el código de administrador proporcionado por el cliente:'),
+                      const SizedBox(height: 10),
+                      TextFormField(
+                        controller: adminCodeController,
+                        decoration: const InputDecoration(
+                          labelText: 'Código de Administrador',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ],
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text('Cancelar'),
+                    ),
+                    TextButton(
+                      onPressed: () async {
+                        Navigator.of(context).pop();
+                        await verifyAdminCode(context);
+                      },
+                      child: const Text('Verificar'),
+                    ),
+                  ],
+                ),
               ),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('Cancelar'),
-                ),
-                TextButton(
-                  onPressed: () async {
-                    Navigator.of(context).pop();
-                    await verifyAdminCode(context);
-                  },
-                  child: const Text('Verificar'),
-                ),
-              ],
-            ),
-          ),
+            );
+          },
         );
-      },
-    );
       } else {
         // Si el usuario no elige registrarse como administrador, proceder con el registro
         await register(context);
