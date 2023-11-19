@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'formulario.dart'; // Asegúrate de importar el archivo formulario.dart
 
 class GaleriaPage extends StatelessWidget {
   @override
@@ -38,6 +39,7 @@ class GaleriaPage extends StatelessWidget {
                         edad: edad,
                         sexo: sexo,
                         imagenUrl: 'assets/imagen$index.jpg',
+                        nombreAnimal: nombre, // Pasa el nombre de la mascota al formulario
                       ),
                     ),
                   );
@@ -65,6 +67,7 @@ class DetalleImagen extends StatelessWidget {
   final String edad;
   final String sexo;
   final String imagenUrl;
+  final String nombreAnimal; // Nuevo campo para el nombre de la mascota
 
   const DetalleImagen({
     required this.nombreImagen,
@@ -72,6 +75,7 @@ class DetalleImagen extends StatelessWidget {
     required this.edad,
     required this.sexo,
     required this.imagenUrl,
+    required this.nombreAnimal,
   });
 
   @override
@@ -153,12 +157,22 @@ class DetalleImagen extends StatelessWidget {
             children: [
               IconButton(
                 icon: const Icon(Icons.favorite),
-                onPressed: () {
-                 
-                },
+                onPressed: () {},
               ),
               const Text('0'),
             ],
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => FormularioAdopcion(
+                    nombreAnimal: nombreAnimal,
+                  ),
+                ),
+              );
+            },
+            child: Text('Adoptar'),
           ),
         ],
       ),
