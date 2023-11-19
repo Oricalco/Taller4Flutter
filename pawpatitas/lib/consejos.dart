@@ -15,13 +15,25 @@ class ConsejosPage extends StatelessWidget {
         title: Text('Consejos para los animales'),
       ),
       body: FirestoreConsejos(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => AddConsejoForm(),
-          ));
-        },
-        child: Icon(Icons.add),
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => AddConsejoForm(),
+              ));
+            },
+            child: Icon(Icons.add),
+          ),
+          SizedBox(width: 16), // Espacio entre los botones
+          FloatingActionButton(
+            onPressed: () {
+              _removeConsejo(); // Lógica para quitar el consejo
+            },
+            child: Icon(Icons.remove),
+          ),
+        ],
       ),
     );
   }
@@ -90,7 +102,6 @@ class _FirestoreConsejosState extends State<FirestoreConsejos> {
                         icon: Icon(Icons.arrow_back),
                         onPressed: () {
                           if (index > 0) {
-                            // Solo retrocede si no está en la primera página
                             _pageController.previousPage(
                               duration: Duration(milliseconds: 300),
                               curve: Curves.easeInOut,
@@ -103,7 +114,6 @@ class _FirestoreConsejosState extends State<FirestoreConsejos> {
                         icon: Icon(Icons.arrow_forward),
                         onPressed: () {
                           if (index < docs.length - 1) {
-                            // Solo avanza si no está en la última página
                             _pageController.nextPage(
                               duration: Duration(milliseconds: 300),
                               curve: Curves.easeInOut,
@@ -171,4 +181,11 @@ class _AddConsejoFormState extends State<AddConsejoForm> {
       ),
     );
   }
+}
+
+// Función para quitar el consejo actual
+void _removeConsejo() {
+  // Obtén la referencia al consejo actual y elimínalo de la base de datos
+  // Puedes usar la referencia del documento actual o alguna lógica específica para tu aplicación
+  // Ejemplo: FirebaseFirestore.instance.collection('consejos').doc('ID_DEL_DOCUMENTO').delete();
 }
