@@ -4,8 +4,8 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'galeria.dart';
 import 'soporte.dart';
 import 'donar.dart';
-
 import 'login.dart';
+import 'respuesta.dart';
 
 
 class HomePage extends StatefulWidget {
@@ -20,7 +20,8 @@ class _HomePageState extends State<HomePage> {
   final screens = [
     GaleriaPage(),
     SoportePage(),
-    DonarPage(),    
+    DonarPage(),          
+    ResultadoFormulario(),    
 
   
   ];
@@ -109,7 +110,12 @@ class _HomePageState extends State<HomePage> {
           GButton(
             icon: Icons.monetization_on,
             text: 'Donaciones',
-          ),    
+          ),
+          GButton(
+            icon: Icons.check,
+            text: 'Resultados',
+          ),
+                
         ],
       ),
     );

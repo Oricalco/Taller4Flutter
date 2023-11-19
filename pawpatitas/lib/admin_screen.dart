@@ -7,6 +7,7 @@ import 'donar.dart';
 import 'metrica.dart';
 import 'login.dart';
 import 'animal_upload.dart';
+import 'aprob_form.dart';
 
 class AdminScreen extends StatefulWidget {
   const AdminScreen({Key? key});
@@ -23,6 +24,7 @@ class _AdminScreenState extends State<AdminScreen> {
     DonarPage(),
     PaginaMetricas(),
     TestPage(),
+    AprovarFormulario(),
   ];
 
   void _logout(BuildContext context) {
@@ -117,6 +119,10 @@ class _AdminScreenState extends State<AdminScreen> {
           GButton(
             icon: Icons.pets,
             text: 'Subir mascota',
+          ),
+           GButton(
+            icon: Icons.check,
+            text: 'Aprobar formularios',
           ),
         ],
       ),
