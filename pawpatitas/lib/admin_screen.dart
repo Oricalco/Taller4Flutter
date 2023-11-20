@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'galeria.dart';
-//import 'soporte.dart';
+import 'aprob_form.dart';
 import 'soporte_admin.dart';
 import 'donar.dart';
 import 'metrica.dart';
@@ -20,11 +20,11 @@ class _AdminScreenState extends State<AdminScreen> {
   int _currentIndex = 0;
   final screens = [
     GaleriaPage(),
-    //SoportePage(),
     SoportePageAdmin(),
     DonarPage(),
     PaginaMetricas(),
     TestPage(),
+    AprovarFormulario(),
   ];
 
   void _logout(BuildContext context) {
@@ -120,6 +120,10 @@ class _AdminScreenState extends State<AdminScreen> {
           GButton(
             icon: Icons.pets,
             text: 'Subir mascota',
+          ),
+          GButton(
+            icon: Icons.check,
+            text: 'Aprobar formularios',
           ),
         ],
       ),
