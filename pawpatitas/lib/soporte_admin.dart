@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'consejos.dart';
-import 'consejos_usuario.dart';
 
-class SoportePage extends StatefulWidget {
-  const SoportePage({Key? key}) : super(key: key);
+class SoportePageAdmin extends StatefulWidget {
+  const SoportePageAdmin({Key? key}) : super(key: key);
 
   @override
-  _SoportePageState createState() => _SoportePageState();
+  _SoportePageAdminState createState() => _SoportePageAdminState();
 }
 
-class _SoportePageState extends State<SoportePage> {
+class _SoportePageAdminState extends State<SoportePageAdmin> {
   final TextEditingController nombreController = TextEditingController();
   final TextEditingController contactoController = TextEditingController();
   final TextEditingController descripcionController = TextEditingController();
@@ -31,13 +30,13 @@ class _SoportePageState extends State<SoportePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Center(
-            child: Text('Soporte', style: TextStyle(fontSize: 45))),
+          child: Text('Soporte', style: TextStyle(fontSize: 45)),
+        ),
       ),
       body: Center(
         child: Container(
-          width: screenWidth * 0.8, // Utiliza el 80% del ancho de la pantalla
-          height: screenHeight *
-              0.6, // Define un porcentaje de altura (en este caso, 60%)
+          width: screenWidth * 0.8,
+          height: screenHeight * 0.6,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -122,7 +121,7 @@ class _SoportePageState extends State<SoportePage> {
                         title: const Text('Consejos Cuidado Animal'),
                         content: Container(
                           width: MediaQuery.of(context).size.width * 0.8,
-                          child: ConsejosPage(), //Vista de admin
+                          child: ConsejosPage(), // Vista de admin
                           //child: ConsejosUsuario(), // Vista de usuario
                         ),
                       );
@@ -156,7 +155,7 @@ class _SoportePageState extends State<SoportePage> {
 void main() {
   runApp(
     const MaterialApp(
-      home: SoportePage(),
+      home: SoportePageAdmin(),
     ),
   );
 }

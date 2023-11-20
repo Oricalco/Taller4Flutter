@@ -7,7 +7,6 @@ import 'donar.dart';
 import 'metrica.dart';
 import 'login.dart';
 import 'animal_upload.dart';
-import 'aprob_form.dart';
 
 class AdminScreen extends StatefulWidget {
   const AdminScreen({Key? key});
@@ -24,7 +23,6 @@ class _AdminScreenState extends State<AdminScreen> {
     DonarPage(),
     PaginaMetricas(),
     TestPage(),
-    AprovarFormulario(),
   ];
 
   void _logout(BuildContext context) {
@@ -82,7 +80,8 @@ class _AdminScreenState extends State<AdminScreen> {
                 Image.asset('assets/banner3.png', fit: BoxFit.fill),
                 IconButton(
                   icon: const Icon(Icons.logout),
-                  onPressed: () => _logout(context), // Llama a la función de cierre de sesión
+                  onPressed: () => _logout(
+                      context), // Llama a la función de cierre de sesión
                 ),
               ],
             ),
@@ -119,10 +118,6 @@ class _AdminScreenState extends State<AdminScreen> {
           GButton(
             icon: Icons.pets,
             text: 'Subir mascota',
-          ),
-           GButton(
-            icon: Icons.check,
-            text: 'Aprobar formularios',
           ),
         ],
       ),
