@@ -7,6 +7,7 @@ import 'donar.dart';
 import 'metrica.dart';
 import 'login.dart';
 import 'animal_upload.dart';
+import 'aprob_form.dart';
 
 class AdminScreen extends StatefulWidget {
   const AdminScreen({Key? key});
@@ -23,6 +24,7 @@ class _AdminScreenState extends State<AdminScreen> {
     DonarPage(),
     PaginaMetricas(),
     TestPage(),
+    AprovarFormulario(),
   ];
 
   void _logout(BuildContext context) {
@@ -78,10 +80,12 @@ class _AdminScreenState extends State<AdminScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Image.asset('assets/banner3.png', fit: BoxFit.fill),
-                IconButton(
-                  icon: const Icon(Icons.logout),
-                  onPressed: () => _logout(
-                      context), // Llama a la función de cierre de sesión
+                Padding(
+                  padding: const EdgeInsets.only(right: 16.0), // Ajusta este valor según tus necesidades
+                  child: IconButton(
+                    icon: const Icon(Icons.logout),
+                    onPressed: () => _logout(context), // Llama a la función de cierre de sesión
+                  ),
                 ),
               ],
             ),
@@ -89,37 +93,48 @@ class _AdminScreenState extends State<AdminScreen> {
         ),
       ),
       body: screens[_currentIndex],
-      bottomNavigationBar: GNav(
-        activeColor: Colors.white,
-        color: Colors.grey,
-        backgroundColor: const Color.fromARGB(255, 34, 34, 34),
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
-        selectedIndex: _currentIndex,
-        onTabChange: (index) => {
-          setState(() => _currentIndex = index),
+      bottomNavigationBar: LayoutBuilder(
+        builder: (context, constraints) {
+          return GNav(
+            activeColor: Colors.white,
+            color: Colors.grey,
+            backgroundColor: const Color.fromARGB(255, 34, 34, 34),
+            padding: EdgeInsets.symmetric(
+              horizontal: constraints.maxWidth > 600 ? 40 : 10,
+              vertical: 18,
+            ),
+            selectedIndex: _currentIndex,
+            onTabChange: (index) => {
+              setState(() => _currentIndex = index),
+            },
+            tabs: const [
+              GButton(
+                icon: Icons.home,
+                text: 'home',
+              ),
+              GButton(
+                icon: Icons.catching_pokemon,
+                text: 'soporte',
+              ),
+              GButton(
+                icon: Icons.monetization_on,
+                text: 'Donaciones',
+              ),
+              GButton(
+                icon: Icons.bar_chart,
+                text: 'metrica',
+              ),
+              GButton(
+                icon: Icons.pets,
+                text: 'Subir mascota',
+              ),
+              GButton(
+                icon: Icons.check,
+                text: 'Aprobar formularios',
+              ),
+            ],
+          );
         },
-        tabs: const [
-          GButton(
-            icon: Icons.home,
-            text: 'home',
-          ),
-          GButton(
-            icon: Icons.catching_pokemon,
-            text: 'soporte',
-          ),
-          GButton(
-            icon: Icons.monetization_on,
-            text: 'Donaciones',
-          ),
-          GButton(
-            icon: Icons.bar_chart,
-            text: 'metrica',
-          ),
-          GButton(
-            icon: Icons.pets,
-            text: 'Subir mascota',
-          ),
-        ],
       ),
     );
   }
