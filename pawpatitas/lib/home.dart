@@ -7,7 +7,6 @@ import 'donar.dart';
 import 'login.dart';
 import 'respuesta.dart';
 
-
 class HomePage extends StatefulWidget {
   const HomePage({Key? key});
 
@@ -20,10 +19,8 @@ class _HomePageState extends State<HomePage> {
   final screens = [
     GaleriaPage(),
     SoportePage(),
-    DonarPage(),          
-    ResultadoFormulario(),    
-
-  
+    DonarPage(),
+    ResultadoFormulario(),
   ];
 
   void _logout(BuildContext context) {
@@ -36,13 +33,13 @@ class _HomePageState extends State<HomePage> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Cierra el cuadro de diálogo
+                Navigator.of(context).pop();
               },
               child: Text('Cancelar'),
             ),
             TextButton(
               onPressed: () async {
-                await FirebaseAuth.instance.signOut(); // Cierra la sesión
+                await FirebaseAuth.instance.signOut();
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
                     builder: (context) => const LoginScreen(),
@@ -81,7 +78,7 @@ class _HomePageState extends State<HomePage> {
                 Image.asset('assets/banner3.png', fit: BoxFit.fill),
                 IconButton(
                   icon: const Icon(Icons.logout),
-                  onPressed: () => _logout(context), // Llama a la función de cierre de sesión
+                  onPressed: () => _logout(context),
                 ),
               ],
             ),
@@ -115,7 +112,6 @@ class _HomePageState extends State<HomePage> {
             icon: Icons.check,
             text: 'Resultados',
           ),
-                
         ],
       ),
     );

@@ -37,13 +37,13 @@ class _AdminScreenState extends State<AdminScreen> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Cierra el cuadro de diálogo
+                Navigator.of(context).pop();
               },
               child: Text('Cancelar'),
             ),
             TextButton(
               onPressed: () async {
-                await FirebaseAuth.instance.signOut(); // Cierra la sesión
+                await FirebaseAuth.instance.signOut();
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
                     builder: (context) => const LoginScreen(),
@@ -81,12 +81,10 @@ class _AdminScreenState extends State<AdminScreen> {
               children: [
                 Image.asset('assets/banner3.png', fit: BoxFit.fill),
                 Padding(
-                  padding: const EdgeInsets.only(
-                      right: 16.0), // Ajusta este valor según tus necesidades
+                  padding: const EdgeInsets.only(right: 16.0),
                   child: IconButton(
                     icon: const Icon(Icons.logout),
-                    onPressed: () => _logout(
-                        context), // Llama a la función de cierre de sesión
+                    onPressed: () => _logout(context),
                   ),
                 ),
               ],

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'auth.dart'; // Importa tu clase Auth aquí
+import 'auth.dart';
 import 'home.dart';
-import 'admin_screen.dart'; // Importa la pantalla de administrador
+import 'admin_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key});
@@ -43,11 +43,10 @@ class _LoginScreenState extends State<LoginScreen> {
     String enteredCode = adminCodeController.text.trim();
 
     if (enteredCode == 'pawpatitas123') {
-      // Código de administrador correcto, permitir el registro
       await register(context);
     } else {
-      // Código de administrador incorrecto, mostrar un mensaje de error
-      showSnackBar(context, 'Código de administrador incorrecto. Verifica el código e intenta nuevamente.');
+      showSnackBar(context,
+          'Código de administrador incorrecto. Verifica el código e intenta nuevamente.');
     }
   }
 
@@ -57,7 +56,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
     if (email.isNotEmpty && password.isNotEmpty) {
       Auth auth = Auth();
-      bool registered = await auth.registerWithEmailAndPassword(email, password, isAdmin ? 'admin' : 'usuario');
+      bool registered = await auth.registerWithEmailAndPassword(
+          email, password, isAdmin ? 'admin' : 'usuario');
 
       if (registered) {
         showSnackBar(context, 'Registro exitoso. Ahora puedes iniciar sesión.');
@@ -95,14 +95,14 @@ class _LoginScreenState extends State<LoginScreen> {
             );
           }
         } else {
-          showSnackBar(context, 'Inicio de sesión fallido. Verifica tus credenciales.');
+          showSnackBar(
+              context, 'Inicio de sesión fallido. Verifica tus credenciales.');
         }
       } else {
         showSnackBar(context, 'Por favor, completa todos los campos.');
       }
     } else {
       if (isAdmin) {
-        // Si el usuario elige registrarse como administrador, solicitar el código de administrador
         showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -117,7 +117,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   content: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Text('Ingresa el código de administrador proporcionado por el cliente:'),
+                      const Text(
+                          'Ingresa el código de administrador proporcionado por el cliente:'),
                       const SizedBox(height: 10),
                       TextFormField(
                         controller: adminCodeController,
@@ -149,7 +150,6 @@ class _LoginScreenState extends State<LoginScreen> {
           },
         );
       } else {
-        // Si el usuario no elige registrarse como administrador, proceder con el registro
         await register(context);
       }
     }
@@ -217,8 +217,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             border: OutlineInputBorder(),
                           ),
                         ),
-                        if (!isLogin) // Mostrar el interruptor solo durante el registro
-                          const SizedBox(height: 10),
+                        if (!isLogin) const SizedBox(height: 10),
                         if (!isLogin)
                           SwitchListTile(
                             title: Text('Registrarse como Admin'),
@@ -242,7 +241,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         TextButton(
                           onPressed: toggleLoginRegistration,
                           child: Text(
-                            isLogin ? '¿No tienes una cuenta? Regístrate' : '¿Ya tienes una cuenta? Inicia Sesión',
+                            isLogin
+                                ? '¿No tienes una cuenta? Regístrate'
+                                : '¿Ya tienes una cuenta? Inicia Sesión',
                             style: const TextStyle(
                               color: Colors.red,
                             ),

@@ -65,8 +65,6 @@ class PaginaMetricas extends StatelessWidget {
           );
         }
 
-        
-
         return Center(
           child: SfCircularChart(
             series: <PieSeries<AdopcionPorRaza, String>>[
@@ -88,8 +86,8 @@ class PaginaMetricas extends StatelessWidget {
     );
   }
 
-  List<AdopcionPorRaza> _generateAdoptionData(List<QueryDocumentSnapshot> data) {
-    
+  List<AdopcionPorRaza> _generateAdoptionData(
+      List<QueryDocumentSnapshot> data) {
     final Map<String, int> razaAdopciones = {};
 
     data.forEach((document) {
@@ -100,7 +98,7 @@ class PaginaMetricas extends StatelessWidget {
     return razaAdopciones.entries.map((entry) {
       final raza = entry.key;
       final adopciones = entry.value;
-      final color = Colors.blue; 
+      final color = Colors.blue;
       return AdopcionPorRaza(raza, adopciones, color);
     }).toList();
   }
@@ -146,34 +144,29 @@ class PaginaMetricas extends StatelessWidget {
   }
 
   List<IngresoPorFecha> _generateIngresoData(List<QueryDocumentSnapshot> data) {
-  final Map<DateTime, int> fechaIngresos = {};
+    final Map<DateTime, int> fechaIngresos = {};
 
-  data.forEach((document) {
-    final timestamp = document['fecha_ingreso'] as Timestamp;
-    final date = timestamp.toDate();
+    data.forEach((document) {
+      final timestamp = document['fecha_ingreso'] as Timestamp;
+      final date = timestamp.toDate();
 
-    // de los datos de fecha de ingreso tomaremos solamente el año y el mes para hacer una clasificacion por rango de un mes
-    final formattedDate = DateTime(date.year, date.month);
+      final formattedDate = DateTime(date.year, date.month);
 
-    fechaIngresos[formattedDate] = (fechaIngresos[formattedDate] ?? 0) + 1;
-  });
+      fechaIngresos[formattedDate] = (fechaIngresos[formattedDate] ?? 0) + 1;
+    });
 
-  final sortedEntries = fechaIngresos.entries.toList()
-    ..sort((a, b) => a.key.compareTo(b.key)); // oredenamos la fechas para que esten en orden a la hora del plot
+    final sortedEntries = fechaIngresos.entries.toList()
+      ..sort((a, b) => a.key.compareTo(b.key));
+    return sortedEntries.map((entry) {
+      final fecha = entry.key;
+      final ingresos = entry.value;
 
-  return sortedEntries.map((entry) {
-    final fecha = entry.key;
-    final ingresos = entry.value;
+      final formattedDate =
+          '${fecha.year}-${fecha.month.toString().padLeft(2, '0')}';
 
-    
-    final formattedDate = '${fecha.year}-${fecha.month.toString().padLeft(2, '0')}';
-
-    return IngresoPorFecha(formattedDate, ingresos);
-  }).toList();
-}
-
-
-
+      return IngresoPorFecha(formattedDate, ingresos);
+    }).toList();
+  }
 }
 
 void main() {

@@ -53,9 +53,10 @@ class _ResultadoFormularioState extends State<ResultadoFormulario> {
           }
 
           final User user = snapshot.data!;
-          _user = user; // Almacena el usuario en _user
+          _user = user;
 
-          return FirestoreData(collectionName: 'formulario', userEmail: user.email!);
+          return FirestoreData(
+              collectionName: 'formulario', userEmail: user.email!);
         },
       ),
     );
@@ -92,7 +93,8 @@ class FirestoreData extends StatelessWidget {
 
         if (docs == null || docs.isEmpty) {
           return Center(
-            child: Text('No hay datos disponibles en la colección "$collectionName" para el usuario actual'),
+            child: Text(
+                'No hay datos disponibles en la colección "$collectionName" para el usuario actual'),
           );
         }
 
@@ -106,11 +108,11 @@ class FirestoreData extends StatelessWidget {
             final direccion = data['direccion'] ?? 'Dirección no disponible';
             final telefono = data['telefono'] ?? 'Teléfono no disponible';
             final rut = data['rut'] ?? 'Rut no disponible';
-            final nombreMascota = data['nombre_mascota'] ?? 'Nombre de mascota no disponible';
+            final nombreMascota =
+                data['nombre_mascota'] ?? 'Nombre de mascota no disponible';
             final correo = data['correo'] ?? 'Correo no disponible';
             final estado = data['estado'] ?? 'En Revision';
 
-            // Define el color de fondo según el estado
             Color backgroundColor = Colors.transparent;
             if (estado == 'Aprobado') {
               backgroundColor = Colors.lightGreen[100] ?? Colors.transparent;

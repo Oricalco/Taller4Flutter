@@ -20,7 +20,6 @@ class _AprovarFormularioState extends State<AprovarFormulario> {
         title: Text('Aprobar Formulario'),
       ),
       body: FirestoreData(collectionName: 'formulario'),
-      // Puedes agregar un botón o cualquier otra lógica para aprobar los formularios
     );
   }
 }
@@ -31,16 +30,20 @@ class FirestoreData extends StatelessWidget {
   FirestoreData({required this.collectionName});
 
   Future<void> aprobarFormulario(String documentId) async {
-    // Implementa la lógica de aprobación aquí
-    await FirebaseFirestore.instance.collection(collectionName).doc(documentId).update({
+    await FirebaseFirestore.instance
+        .collection(collectionName)
+        .doc(documentId)
+        .update({
       'estado': 'Aprobado',
     });
     print('Formulario aprobado: $documentId');
   }
 
   Future<void> rechazarFormulario(String documentId) async {
-    // Implementa la lógica de rechazo aquí
-    await FirebaseFirestore.instance.collection(collectionName).doc(documentId).update({
+    await FirebaseFirestore.instance
+        .collection(collectionName)
+        .doc(documentId)
+        .update({
       'estado': 'Reprobado',
     });
     print('Formulario rechazado: $documentId');
@@ -67,7 +70,8 @@ class FirestoreData extends StatelessWidget {
 
         if (docs == null || docs.isEmpty) {
           return Center(
-            child: Text('No hay datos disponibles en la colección "$collectionName"'),
+            child: Text(
+                'No hay datos disponibles en la colección "$collectionName"'),
           );
         }
 
@@ -81,7 +85,8 @@ class FirestoreData extends StatelessWidget {
             final direccion = data['direccion'] ?? 'Dirección no disponible';
             final telefono = data['telefono'] ?? 'Teléfono no disponible';
             final rut = data['rut'] ?? 'Rut no disponible';
-            final nombreMascota = data['nombre_mascota'] ?? 'Nombre de mascota no disponible';
+            final nombreMascota =
+                data['nombre_mascota'] ?? 'Nombre de mascota no disponible';
             final correo = data['correo'] ?? 'Correo no disponible';
             final estado = data['estado'] ?? 'En revision';
 

@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:login/home.dart';
+//import 'package:login/home.dart';
 import 'login.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-    // Configura las opciones de Firebase aquí
     options: const FirebaseOptions(
       apiKey: "AIzaSyB7tb_RuD26PCHR_8TAs76ALekpDRxs_pw",
       projectId: "flutter-test-a1515",

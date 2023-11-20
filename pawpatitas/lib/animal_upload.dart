@@ -64,7 +64,8 @@ class FirestoreData extends StatelessWidget {
             final edad = data['edad'] ?? 'Edad no disponible';
             final sexo = data['sexo'] ?? 'Sexo no disponible';
             final raza = data['raza'] ?? 'Raza no disponible';
-            final descripcion = data['descripcion'] ?? 'Descripción no disponible';
+            final descripcion =
+                data['descripcion'] ?? 'Descripción no disponible';
 
             final fechaTimestamp = data['fecha_ingreso'] as Timestamp;
             final fechaIngreso = dateFormatter.format(fechaTimestamp.toDate());

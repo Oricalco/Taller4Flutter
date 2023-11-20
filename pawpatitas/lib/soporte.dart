@@ -36,9 +36,8 @@ class _SoportePageState extends State<SoportePage> {
       ),
       body: Center(
         child: Container(
-          width: screenWidth * 0.8, // Utiliza el 80% del ancho de la pantalla
-          height: screenHeight *
-              0.6, // Define un porcentaje de altura (en este caso, 60%)
+          width: screenWidth * 0.8,
+          height: screenHeight * 0.6,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

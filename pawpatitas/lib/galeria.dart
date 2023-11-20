@@ -39,7 +39,7 @@ class GaleriaPage extends StatelessWidget {
                         edad: edad,
                         sexo: sexo,
                         imagenUrl: 'assets/imagen$index.jpg',
-                        nombreAnimal: nombre, // Pasa el nombre de la mascota al formulario
+                        nombreAnimal: nombre,
                       ),
                     ),
                   );
@@ -67,7 +67,7 @@ class DetalleImagen extends StatelessWidget {
   final String edad;
   final String sexo;
   final String imagenUrl;
-  final String nombreAnimal; // Nuevo campo para el nombre de la mascota
+  final String nombreAnimal;
 
   const DetalleImagen({
     required this.nombreImagen,
@@ -101,7 +101,8 @@ class DetalleImagen extends StatelessWidget {
                   children: [
                     const Text(
                       'Nombre:',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(width: 8),
                     Text(
@@ -114,7 +115,8 @@ class DetalleImagen extends StatelessWidget {
                   children: [
                     const Text(
                       'Descripción:',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(width: 8),
                     Text(
@@ -127,7 +129,8 @@ class DetalleImagen extends StatelessWidget {
                   children: [
                     const Text(
                       'Edad:',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(width: 8),
                     Text(
@@ -140,7 +143,8 @@ class DetalleImagen extends StatelessWidget {
                   children: [
                     const Text(
                       'Sexo:',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(width: 8),
                     Text(

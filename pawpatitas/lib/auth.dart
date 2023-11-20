@@ -3,21 +3,22 @@ import 'package:firebase_auth/firebase_auth.dart';
 class Auth {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Future<bool> registerWithEmailAndPassword(String email, String password, String role) async {
+  Future<bool> registerWithEmailAndPassword(
+      String email, String password, String role) async {
     try {
-      await _auth.createUserWithEmailAndPassword(
+      await _auth
+          .createUserWithEmailAndPassword(
         email: email,
         password: password,
-      ).then((authResult) {
-        // Agrega el rol a la base de datos al registrar
+      )
+          .then((authResult) {
         authResult.user?.updateProfile(displayName: role);
       });
 
-      // Registro exitoso
       return true;
     } catch (e) {
       print('Error durante el registro: $e');
-      return false; // Registro fallido
+      return false;
     }
   }
 
@@ -27,15 +28,14 @@ class Auth {
         email: email,
         password: password,
       );
-      // Inicio de sesión exitoso
+
       return true;
     } catch (e) {
       print('Error durante el inicio de sesión: $e');
-      return false; // Inicio de sesión fallido
+      return false;
     }
   }
 
-  // Obtén el rol del usuario actual
   String? getRole() {
     return _auth.currentUser?.displayName;
   }

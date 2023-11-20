@@ -52,9 +52,6 @@ class _EmailFormState extends State<EmailForm> {
           SizedBox(height: 16.0),
           ElevatedButton(
             onPressed: () {
-              // Aquí puedes implementar la lógica para enviar el correo.
-              // Puedes usar la información en _toController.text, _subjectController.text, y _bodyController.text.
-              // Por ejemplo, podrías llamar a una función que maneje el envío del correo.
               _sendEmail();
             },
             child: Text('Enviar Correo'),
@@ -64,10 +61,8 @@ class _EmailFormState extends State<EmailForm> {
     );
   }
 
-  // Esta función es un marcador de posición para la lógica de envío de correo.
   void _sendEmail() {
-    // Aquí implementarías la lógica real para enviar el correo.
-    // Puedes usar las direcciones de correo electrónico y el contenido del cuerpo del correo desde los controladores.
+    //Print para test de la funcion
     print(
         'Enviando correo a ${_toController.text} con asunto "${_subjectController.text}" y cuerpo "${_bodyController.text}"');
   }
