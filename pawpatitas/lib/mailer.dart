@@ -1,5 +1,6 @@
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class EmailSender {
   final String username;
@@ -23,15 +24,10 @@ class EmailSender {
 
     try {
       // Enviar el mensaje
-      final sendReport = await send(message, smtpServer);
+      await send(message, smtpServer);
 
-      // Verificar si el correo electrónico se envió con éxito
-      if (sendReport != null) {
-        print('Mensaje enviado con éxito');
-      } else {
-        print('Error al enviar el mensaje');
-        throw Exception('Error al enviar el mensaje');
-      }
+      // Si no se lanzó una excepción, entonces el mensaje se envió con éxito
+      print('Mensaje enviado con éxito');
     } on MailerException catch (e) {
       print('Error al enviar el mensaje: $e');
       throw Exception('Error al enviar el mensaje');
@@ -40,8 +36,13 @@ class EmailSender {
 }
 
 void main() async {
-  // Reemplaza 'tucorreo@gmail.com' y 'tucontraseña' con tus credenciales
-  final emailSender = EmailSender('tucorreo@gmail.com', 'tucontraseña');
+  await dotenv.load(); // Cargar variables de entorno
+
+  // Acceder a las variables de entorno
+  final emailSender = EmailSender(
+    dotenv.env['USERNAME'] ?? '',
+    dotenv.env['PASSWORD'] ?? '',
+  );
 
   try {
     await emailSender.sendEmail(
