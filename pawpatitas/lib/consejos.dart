@@ -27,12 +27,12 @@ class ConsejosPage extends StatelessWidget {
             child: Icon(Icons.add),
           ),
           SizedBox(width: 16), // Espacio entre los botones
-          FloatingActionButton(
-            onPressed: () {
-              _removeConsejo(); // Lógica para quitar el consejo
-            },
-            child: Icon(Icons.remove),
-          ),
+          //FloatingActionButton(
+          //  onPressed: () {
+          //    _removeConsejo(); // Lógica para quitar el consejo
+          //  },
+          //  child: Icon(Icons.remove),
+          //),
         ],
       ),
     );
