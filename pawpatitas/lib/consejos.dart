@@ -183,9 +183,6 @@ class _AddConsejoFormState extends State<AddConsejoForm> {
   }
 }
 
-// Función para quitar el consejo actual
 void _removeConsejo() {
-  // Obtén la referencia al consejo actual y elimínalo de la base de datos
-  // Puedes usar la referencia del documento actual o alguna lógica específica para tu aplicación
-  // Ejemplo: FirebaseFirestore.instance.collection('consejos').doc('ID_DEL_DOCUMENTO').delete();
+  //Aqui deberia de ir la logica de la funcion
 }
