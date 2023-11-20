@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'consejos.dart';
+import 'comentario.dart';
 //import 'consejos_usuario.dart';
 
 class SoportePageAdmin extends StatefulWidget {
@@ -47,16 +48,12 @@ class _SoportePageAdminState extends State<SoportePageAdmin> {
                     context: context,
                     builder: (context) {
                       return AlertDialog(
-                        title: const Text('Dejar un Comentario'),
-                        content: const Text('Agrega tu comentario aquí.'),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: const Text('Cerrar'),
-                          ),
-                        ],
+                        title:
+                            const Text('Enviar un comentario a nuestro correo'),
+                        content: Container(
+                          width: MediaQuery.of(context).size.width * 0.8,
+                          child: EmailForm(),
+                        ),
                       );
                     },
                   );
